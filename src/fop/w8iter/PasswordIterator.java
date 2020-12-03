@@ -11,6 +11,10 @@ public class PasswordIterator implements Iterator<String>
 	private static int indexer2 = 0;
 	private static int indexer3 = 0;
 	private static int index = 0;
+	private static boolean firstPriorityPassed = false;
+	private static boolean secondPriorityPassed = false;
+	private static boolean thirdPriorityPassed = false;
+	private static String [] alreadyTyped = new String [(int) Math.pow(10, 6)];
     public PasswordIterator(int passwordLength) 
     {
     	this.passwordLength = passwordLength;
@@ -27,21 +31,20 @@ public class PasswordIterator implements Iterator<String>
 
     public String next() 
     {
-    	boolean firstPriorityPassed = false;
-    	boolean secondPriorityPassed = false;
-    	boolean thirdPriorityPassed = false;
+    	
     	if(this.hasNext() == false)
     		Util.noSuchElement("No more options.");
-    	String ret = null;
-    	String [] alreadyTyped = new String [(int) Math.pow(10, this.passwordLength)];
+    	String ret = "";
+    	
     	if(firstPriorityPassed == false)
     	{
     		if(indexer0 < 10)
-    			ret += (char)operationNumber;
+    			for(int i = 0; i < this.passwordLength; i++)
+    				ret += Integer.toString(indexer0);
     		indexer0++;
     		alreadyTyped[index] = ret;
     		index++;
-    		if(indexer0 == 9)
+    		if(indexer0 == 10)
     			firstPriorityPassed = true;
     		operationNumber++;
     		return ret;
@@ -52,12 +55,12 @@ public class PasswordIterator implements Iterator<String>
     		if(indexer1 < (11 - this.passwordLength))
     		{
     			for(int j = 0, startSymbol = indexer1; j < this.passwordLength; j++, startSymbol++)
-    				ret += (char)startSymbol;
+    				ret += Integer.toString(startSymbol);
     			alreadyTyped[index] = ret;
         		index++;
     			indexer1++;
     		}
-    		if(indexer1 == 10 - this.passwordLength)
+    		if(indexer1 == 11 - this.passwordLength)
     			secondPriorityPassed = true;
     		operationNumber++;
     		return ret;
@@ -68,12 +71,12 @@ public class PasswordIterator implements Iterator<String>
     		if(indexer2 < (11 - this.passwordLength))
     		{
     			for(int j = 0, startSymbol = this.passwordLength + indexer2 - 1; j < this.passwordLength; j++, startSymbol--)
-    				ret += (char)startSymbol;
+    				ret += Integer.toString(startSymbol);
     			alreadyTyped[index] = ret;
         		index++;
     			indexer2++;
     		}
-    		if(indexer2 == 10 - this.passwordLength)
+    		if(indexer2 == 11 - this.passwordLength)
     			thirdPriorityPassed = true;
     		operationNumber++;
     		return ret;
@@ -83,7 +86,7 @@ public class PasswordIterator implements Iterator<String>
     	{
  
    			boolean alreadyTypedChecker = false;
-   			for(int j = 0; j < alreadyTyped.length; j++)
+   			for(int j = 0; j < index; j++)
    				if(alreadyTyped[j].equals(Util.longToStringWithLength(indexer3, this.passwordLength)))
     			{
     				alreadyTypedChecker = true;
@@ -94,7 +97,6 @@ public class PasswordIterator implements Iterator<String>
    			indexer3++;
    			if(alreadyTypedChecker == true)
    			{
-   				operationNumber++;
     			return this.next();
    			}
    			operationNumber++;
