@@ -18,8 +18,8 @@ public class PasswordIterator implements Iterator<String>
     public PasswordIterator(int passwordLength) 
     {
     	this.passwordLength = passwordLength;
-    	if(passwordLength < 1 || passwordLength > 9)
-    		Util.badArgument("Password length is not appropriate");
+    	//if(passwordLength < 1 || passwordLength > 9)
+    	//	Util.badArgument("Password length is not appropriate");
     }
 
     public boolean hasNext() 

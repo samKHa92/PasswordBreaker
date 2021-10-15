@@ -67,6 +67,4 @@ public class Range implements Iterable<Integer>
 				return true;
 		return false;
 	}
-	
-	
 }
